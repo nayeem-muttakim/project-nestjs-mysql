@@ -8,26 +8,33 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-import { CreateProductDto } from './dto/create-product.dto';
+
+import { Product } from './entities/product.entity';
 
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @Post()
-  create(@Body() dto: CreateProductDto) {
-    return this.productsService.create(dto);
+  create(@Body() data: Partial<Product>): Promise<Product> {
+    return this.productsService.create(data);
   }
   @Get()
   findMany() {
     return this.productsService.findMany();
   }
+  @Get(':id')
+  findById(@Param('id') id: number) {
+    return this.productsService.findById(id);
+  }
 
   @Patch(':id')
-  update(@Param('id') id: number, @Body() dto: CreateProductDto) {
-    return this.productsService.update(id, dto);
+  update(
+    @Param('id') id: number,
+    @Body() data: Partial<Product>,
+  ): Promise<Product> {
+    return this.productsService.update(id, data);
   }
-  
 
   @Delete(':id')
   delete(@Param('id') id: number) {

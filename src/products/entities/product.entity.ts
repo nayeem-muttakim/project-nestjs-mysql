@@ -10,4 +10,6 @@ export class Product {
   category: string;
   @Column()
   description: string;
+  @Column('json')
+  images: string[];
 }
