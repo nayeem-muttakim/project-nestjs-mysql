@@ -11,5 +11,5 @@ export class Product {
   @Column()
   description: string;
   @Column('json')
-  images: string[];
+  images: { publicId: string; url: string }[];
 }
