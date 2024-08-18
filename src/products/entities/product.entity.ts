@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Image } from './image.entity';
 
 @Entity({ name: 'products' })
 export class Product {
@@ -13,7 +14,7 @@ export class Product {
 
   @Column()
   description: string;
-  
-  @Column('json')
-  images: { publicId: string; url: string }[];
+
+  @OneToMany(() => Image, (image) => image.product, { cascade: true })
+  images: Image[];
 }

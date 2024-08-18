@@ -3,12 +3,16 @@ import { Product } from './entities/product.entity';
 
 import { InjectRepository } from '@nestjs/typeorm';
 import { Injectable } from '@nestjs/common';
+import { Image } from './entities/image.entity';
 
 @Injectable()
 export class ProductsService {
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
+
+    @InjectRepository(Image)
+    private readonly imageRepository: Repository<Image>,
   ) {}
 
   async create(data: Partial<Product>): Promise<Product> {
@@ -37,16 +41,17 @@ export class ProductsService {
     return this.productRepository.remove(product);
   }
 
-  async deleteImage(id: number, imageId: string) {
-    const entity = await this.productRepository.findOne({ where: { id } });
-    // console.log(entity.images,imageId)
-    if (entity) {
-      const updatedImages = entity.images.filter((image) => {
-        return image.publicId !== imageId;
-      });
-      // console.log(updatedImages);
-      entity.images = updatedImages;
-      await this.productRepository.save(entity);
+  async deleteImage(productId: number, imageId: number): Promise<Product> {
+    const image = await this.imageRepository.findOne({
+      where: { id: imageId, product: { id: productId } },
+    });
+
+    if (image) {
+      await this.imageRepository.remove(image);
     }
+    return this.productRepository.findOne({
+      where: { id: productId },
+      relations: ['images'],
+    });
   }
 }

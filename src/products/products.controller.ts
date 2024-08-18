@@ -41,9 +41,8 @@ export class ProductsController {
     return this.productsService.delete(id);
   }
   @Delete(':id/image/:imageId')
- async deleteImage(@Param('id') id: number, @Param('imageId') imageId: string) {
-    const updatedProduct = await this.productsService.deleteImage(id, imageId);
+ async deleteImage(@Param('id') id: number, @Param('imageId') imageId: number):Promise<Product> {
+  return this.productsService.deleteImage(id, imageId);
     
-    return updatedProduct;
   }
 }
