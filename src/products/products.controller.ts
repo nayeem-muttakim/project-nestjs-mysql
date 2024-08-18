@@ -40,4 +40,10 @@ export class ProductsController {
   delete(@Param('id') id: number) {
     return this.productsService.delete(id);
   }
+  @Delete(':id/image/:imageId')
+ async deleteImage(@Param('id') id: number, @Param('imageId') imageId: string) {
+    const updatedProduct = await this.productsService.deleteImage(id, imageId);
+    
+    return updatedProduct;
+  }
 }
