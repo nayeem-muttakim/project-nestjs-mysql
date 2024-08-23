@@ -8,7 +8,6 @@ import {
   Delete,
 } from '@nestjs/common';
 import { ProductsService } from './products.service';
-
 import { Product } from './entities/product.entity';
 
 @Controller('products')
@@ -19,10 +18,12 @@ export class ProductsController {
   create(@Body() data: Partial<Product>): Promise<Product> {
     return this.productsService.create(data);
   }
+
   @Get()
   findMany() {
     return this.productsService.findMany();
   }
+
   @Get(':id')
   findById(@Param('id') id: number) {
     return this.productsService.findById(id);
@@ -41,8 +42,12 @@ export class ProductsController {
     return this.productsService.delete(id);
   }
   @Delete(':id/image/:imageId')
- async deleteImage(@Param('id') id: number, @Param('imageId') imageId: number):Promise<Product> {
-  return this.productsService.deleteImage(id, imageId);
-    
+  async deleteImage(
+    @Param('id') productId: number,
+    @Param('imageId') imageId: number,
+  ): Promise<void> {
+   
+    // console.log(`Deleting image with id ${imageId} from product ${productId}`);
+    await this.productsService.deleteImage(productId, imageId);
   }
 }

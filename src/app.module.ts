@@ -18,8 +18,12 @@ import { join } from 'path';
         username: configService.get('DB_USERNAME'),
         password: configService.get('DB_PASSWORD'),
         database: configService.get('DB_NAME'),
-        entities: [join(process.cwd(), 'dist/**/*.entity.js')],
-        synchronize: true,
+        entities: [
+          process.env.NODE_ENV === 'production'
+            ? join(__dirname, '**/*.entity.js')
+            : join(__dirname, '**/*.entity.js'),
+        ],
+        synchronize: process.env.NODE_ENV !== 'production',
       }),
       inject: [ConfigService],
     }),

@@ -15,6 +15,6 @@ export class Product {
   @Column()
   description: string;
 
-  @OneToMany(() => Image, (image) => image.product, { cascade: true })
+  @OneToMany(() => Image, (image) => image.product)
   images: Image[];
 }
